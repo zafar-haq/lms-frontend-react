@@ -23,10 +23,10 @@ function AdminLogin() {
     }
 
     useEffect(() => {
-        localStorage.setItem('adminToken', adminAuth.adminToken)
-        if(adminAuth.adminToken !== ''){
-            router('/admin/dashboard')
-        }else if(adminAuth.authError !== ''){
+        if (adminAuth.adminToken !== '') {
+            localStorage.setItem('adminToken', adminAuth.adminToken)
+            router('/admin/view/dashboard')
+        } else if (adminAuth.authError !== '') {
             setSnackOpen(true)
             setSnackMessage(adminAuth.authError)
             // alert(adminAuth.authError)
@@ -49,7 +49,7 @@ function AdminLogin() {
                 </Grid>
             </Paper>
             {/* </Grid> */}
-            <Snackbar open={snackOpen} autoHideDuration={600} anchorOrigin={{ vertical: 'top', horizontal: 'right'}}><Alert severity='error'>{snackMessage}</Alert></Snackbar>
+            <Snackbar open={snackOpen} autoHideDuration={600} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}><Alert severity='error'>{snackMessage}</Alert></Snackbar>
         </Grid>
     )
 }

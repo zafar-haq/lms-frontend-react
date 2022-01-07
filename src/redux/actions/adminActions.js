@@ -21,3 +21,10 @@ export const removeAuth = value => {
         payload: value
     }
 }
+
+export const getCounts = value => {
+    return {
+        type: adminActions.GET_COUNTS,
+        payload: value
+    }
+}

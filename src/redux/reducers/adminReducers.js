@@ -18,12 +18,34 @@ export const loginReducer = (state = loginInitialState, { type, payload }) => {
                 adminToken: payload
             }
         case adminActions.AUTH_ERROR:
-            return{
+            return {
                 ...state,
                 authError: payload.error
             }
         default:
             return state;
+    }
+}
+
+const dashboardInitialState = {
+    "adminCount": 0,
+    "classCount": 0,
+    "instructorCount": 0,
+    "studentCount": 0
+}
+
+export const dashboardReducer = (state = dashboardInitialState, {type, payload}) => {
+    switch (type){
+        case adminActions.GET_COUNTS:
+            return{
+                ...state,
+                adminCount: payload.adminCount,
+                classCount: payload.classCount,
+                instructorCount: payload.instructorCount,
+                studentCount: payload.studentCount
+            }
+        default:
+            return state
     }
 }
 
