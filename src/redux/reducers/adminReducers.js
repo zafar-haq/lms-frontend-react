@@ -49,3 +49,16 @@ export const dashboardReducer = (state = dashboardInitialState, {type, payload})
     }
 }
 
+const adminViewStudentsInitial = { students: [] }
+
+export const adminViewStudentsReducer = (state = adminViewStudentsInitial, {type, payload}) => {
+    switch (type){
+        case adminActions.SET_ADMIN_VIEW_STUDENTS:
+            return{
+                ...state,
+                students: payload
+            }
+        default:
+            return state
+    }
+}

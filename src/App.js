@@ -4,6 +4,7 @@ import AdminLogin from './components/admin/AdminLogin';
 import AppBarAdmin from './components/admin/AppBarAdmin';
 import { BrowserRouter as Router, Routes, Route  } from 'react-router-dom'
 import AdminDashboard from './components/admin/AdminDashboard';
+import AdminViewStudents from './components/admin/AdminViewStudents'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/view" element={<AppBarAdmin />}> 
             <Route path="dashboard" element={<AdminDashboard />}/>
+            <Route path="students" element={<AdminViewStudents />}/>
             <Route path="logout" element={<AdminDashboard />}/>
           </Route>
         </Routes>

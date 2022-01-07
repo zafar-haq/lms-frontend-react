@@ -1,9 +1,10 @@
 import { combineReducers } from "redux";
-import { loginReducer, dashboardReducer } from './adminReducers'
+import { loginReducer, dashboardReducer, adminViewStudentsReducer } from './adminReducers'
 
 const reducers = combineReducers({
     adminAuth: loginReducer,
-    adminDashboard: dashboardReducer
+    adminDashboard: dashboardReducer,
+    adminViewStudents: adminViewStudentsReducer
 })
 
 export default reducers

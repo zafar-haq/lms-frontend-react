@@ -149,14 +149,14 @@ export default function MiniDrawer() {
             </ListItem>
           ))} */}
 
-          <ListItem button key='Dashboard'>
+          <ListItem button key='Dashboard' onClick={() => router('/admin/view/dashboard')}>
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
             <ListItemText primary='Dashboard' />
           </ListItem>
 
-          <ListItem button key='Students'>
+          <ListItem button key='Students' onClick={() => router('/admin/view/students')}>
             <ListItemIcon>
               <AccountBoxIcon />
             </ListItemIcon>

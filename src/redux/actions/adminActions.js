@@ -28,3 +28,10 @@ export const getCounts = value => {
         payload: value
     }
 }
+
+export const setAdminViewStudents = value => {
+    return {
+        type: adminActions.SET_ADMIN_VIEW_STUDENTS,
+        payload: value
+    }
+}
