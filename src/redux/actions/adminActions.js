@@ -35,3 +35,10 @@ export const setAdminViewStudents = value => {
         payload: value
     }
 }
+
+export const setAdminViewClasses = value => {
+    return {
+        type: adminActions.SET_ADMIN_VIEW_CLASSES,
+        payload: value
+    }
+}

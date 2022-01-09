@@ -62,3 +62,17 @@ export const adminViewStudentsReducer = (state = adminViewStudentsInitial, {type
             return state
     }
 }
+
+const adminViewClassesInitial = { classes: [] }
+
+export const adminViewClassesReducer = (state = adminViewClassesInitial, {type, payload}) => {
+    switch (type){
+        case adminActions.SET_ADMIN_VIEW_CLASSES:
+            return{
+                ...state,
+                classes: payload
+            }
+        default:
+            return state
+    }
+}

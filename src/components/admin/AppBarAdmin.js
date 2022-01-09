@@ -11,13 +11,14 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
+import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 
 import { Outlet, useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
@@ -103,8 +104,8 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
-  function logout(){
-    dispatch({type: 'ADMIN_LOGOUT_REQUEST'})
+  function logout() {
+    dispatch({ type: 'ADMIN_LOGOUT_REQUEST' })
     router('/admin/login')
   }
 
@@ -158,15 +159,29 @@ export default function MiniDrawer() {
 
           <ListItem button key='Students' onClick={() => router('/admin/view/students')}>
             <ListItemIcon>
-              <AccountBoxIcon />
+              <SchoolOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary='Students' />
           </ListItem>
 
+          <ListItem button key='Classes' onClick={() => router('/admin/view/classes')}>
+            <ListItemIcon>
+              <BorderColorOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary='Classes' />
+          </ListItem>
+
+          <ListItem button key='Instructors'>
+            <ListItemIcon>
+              <AccountBoxIcon />
+            </ListItemIcon>
+            <ListItemText primary='Instructors' />
+          </ListItem>
+
           <ListItem button key='Logout' onClick={logout}>
-              <ListItemIcon>
-                <LogoutIcon />
-              </ListItemIcon>
+            <ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
             <ListItemText primary='Logout' />
           </ListItem>
 

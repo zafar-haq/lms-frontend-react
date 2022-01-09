@@ -13,9 +13,11 @@ function AdminViewStudents() {
 
     const [open, setOpen] = useState(false);
     const [credentials, setCredentials] = useState({ email: '', name: '', password: '' })
-
+    const [selectionModel, setSelectionModel] = useState(null)
     const viewStudents = useSelector((state) => state.adminViewStudents)
     const dispatch = useDispatch()
+    const token = localStorage.getItem('adminToken')
+
     useEffect(() => {
         dispatch({ type: 'ADMIN_VIEW_STUDENTS_REQUEST', payload: { token: localStorage.getItem('adminToken') } })
     }, [])
@@ -23,7 +25,6 @@ function AdminViewStudents() {
     async function createStudent() {
         const { name, email, password } = credentials
         const payload = { email: email, name: name, password: password }
-        const token = localStorage.getItem('adminToken')
         try {
             const response = await axiosService.send('admin/create/student', token, payload, 'post')
             dispatch({ type: 'ADMIN_VIEW_STUDENTS_REQUEST', payload: { token: token } })
@@ -41,6 +42,11 @@ function AdminViewStudents() {
         setOpen(false);
     };
 
+    const deleteStudent = async () => {
+        await axiosService.send('admin/delete/student', token, {id: selectionModel[0]}, 'post')
+        window.location.reload()
+    }
+
     return (
         <Box sx={{ display: 'inline-flex', flexDirection: 'row' }}>
             <Box style={{ height: 250, width: 550, height: 500 }}  >
@@ -55,13 +61,17 @@ function AdminViewStudents() {
                         }
 
                     }}
+                    onSelectionModelChange={(newSelectionModel) => {
+                        console.log(newSelectionModel)
+                        setSelectionModel(newSelectionModel);
+                      }}
                 />
             </Box>
             <Stack>
                 <Button variant="contained" color="success" startIcon={<AddIcon />} sx={{ mt: 5, ml: 2 }} onClick={handleOpen} >
                     Create Student
                 </Button>
-                <Button variant="outlined" color="error" startIcon={<RemoveIcon />} sx={{ mt: 1, ml: 2 }} >
+                <Button variant="outlined" color="error" startIcon={<RemoveIcon />} sx={{ mt: 1, ml: 2 }} onClick={deleteStudent} >
                     Remove Student
                 </Button>
             </Stack>
