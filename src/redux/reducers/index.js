@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import { loginReducer, dashboardReducer, adminViewStudentsReducer, adminViewClassesReducer } from './adminReducers'
+import { instructorLoginReducer, instructorViewClassesReducer } from "./instructorReducer";
 import { studentLoginReducer, studentViewClassesReducer, studentViewClassesToEnrollReducer } from "./studentReducer";
 
 const reducers = combineReducers({
@@ -9,7 +10,9 @@ const reducers = combineReducers({
     adminViewClasses: adminViewClassesReducer,
     studentAuth: studentLoginReducer,
     studentViewClasses: studentViewClassesReducer,
-    studentViewClassesToEnroll: studentViewClassesToEnrollReducer
+    studentViewClassesToEnroll: studentViewClassesToEnrollReducer,
+    instructorAuth: instructorLoginReducer,
+    instructorViewClasses: instructorViewClassesReducer
 })
 
 export default reducers

@@ -1,25 +1,29 @@
-import { Avatar, Button, Card, CardActions, CardContent, CardHeader, Dialog, DialogActions, DialogContent, DialogTitle, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Typography } from "@mui/material"
+import { Avatar, Button, Card, CardActions, CardContent, CardHeader, Dialog, DialogActions, DialogContentText, DialogContent, DialogTitle, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Typography, TextField } from "@mui/material"
 import { red, blue, green, yellow } from '@mui/material/colors';
 import { Box } from "@mui/system"
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import RemoveIcon from '@mui/icons-material/Remove';
 import LibraryBooksOutlinedIcon from '@mui/icons-material/LibraryBooksOutlined';
 import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
+import UploadFileOutlinedIcon from '@mui/icons-material/UploadFileOutlined';
 import axiosService from "../../services/axiosService";
-import axios from "axios";
 
 
-function StudentViewClasses() {
+function InstructorViewClasses() {
     const colors = [red[500], blue[500], green[500], yellow[500]]
-    const token = localStorage.getItem('studentToken')
+    const token = localStorage.getItem('instructorToken')
 
+    const inputFile = useRef(null)
+    const [name, setName] = useState('')
+    const [classId, setClassId] = useState(null)
+    const [openFileDialog, setOpenFileDialog] = useState(false)
+    const [fileInput, setFileInput] = useState({})
     const [open, setOpen] = useState(false)
     const [courseMaterial, setCourseMaterial] = useState([])
-    const classes = useSelector(state => state.studentViewClasses.classes)
+    const classes = useSelector(state => state.instructorViewClasses.classes)
     const dispatch = useDispatch()
     useEffect(() => {
-        dispatch({ type: 'STUDENT_VIEW_CLASSES_REQUEST', payload: { token: token } })
+        dispatch({ type: 'INSTRUCTOR_VIEW_CLASSES_REQUEST', payload: { token: token } })
         console.log(classes)
     }, [])
 
@@ -31,8 +35,37 @@ function StudentViewClasses() {
         setOpen(true)
     }
 
+    function uploadCourseMaterial(classId) {
+        setClassId(classId)
+        setOpenFileDialog(true)
+    }
+
+    async function submitFile() {
+        let formData = new FormData()
+        formData.append( 
+            "file", 
+            fileInput, 
+            fileInput.name 
+          ); 
+        formData.append(
+            "name",
+            name
+        )
+        const response = await axiosService.send(`CourseMaterialRoute/${classId}/upload`, token, formData, 'post')
+        setOpenFileDialog(false)
+    }
+
+    const onFileChange = event => {
+        setFileInput(event.target.files[0]);
+        console.log(fileInput)
+    };
+
     function handleClose() {
         setOpen(false)
+    }
+
+    function handleCloseFileDialog() {
+        setOpenFileDialog(false)
     }
 
     return (
@@ -58,18 +91,18 @@ function StudentViewClasses() {
                                     <ul style={{ textAlign: 'left' }}>
                                         <li key={1}>Strength: {value.strength}</li>
                                         <li key={2}>Enrolled Students: {value.enrolledStudents}</li>
-                                        <li key={3}>Number of Instructors: {value['Instructors'].length}</li>
                                     </ul>
                                 </Typography>
                             </CardContent>
                             <CardActions >
-                                <Button color='error' onClick={() => { }} startIcon={<RemoveIcon />}>
-                                    Enroll out
-                                </Button>
                                 <Button onClick={() => { getCourseMaterial(value.id) }} startIcon={<LibraryBooksOutlinedIcon />}>
-                                    View Course Material
+                                    <p style={{ fontSize: 12 }}>View Course Material</p>
+                                </Button>
+                                <Button onClick={() => { uploadCourseMaterial(value.id) }} startIcon={<UploadFileOutlinedIcon />}>
+                                    <p style={{ fontSize: 12 }}>upload Course Material</p>
                                 </Button>
                             </CardActions>
+                            <p style={{ fontSize: 10 }}>File uploaded: {fileInput.name}</p>
                         </Card>)
                     })
                 }
@@ -108,8 +141,32 @@ function StudentViewClasses() {
                 </DialogActions>
             </Dialog>
 
+            <Dialog open={openFileDialog} onClose={handleCloseFileDialog}>
+                <DialogTitle>Upload Course Material</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        File Details
+                    </DialogContentText>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="description"
+                        label="Description"
+                        type="text"
+                        fullWidth
+                        variant="standard"
+                        onChange={(e) => { setName(e.target.value) }}
+                    />
+                    <input type='file' id='file' value={''} ref={inputFile} onChange={onFileChange} />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseFileDialog}>Cancel</Button>
+                    <Button onClick={submitFile}>Submit</Button>
+                </DialogActions>
+            </Dialog>
+
         </Box>
     )
 }
 
-export default StudentViewClasses
+export default InstructorViewClasses

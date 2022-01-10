@@ -8,6 +8,8 @@ import studentLoginSaga from "./studentLoginSaga";
 import studentViewClassesSaga from "./studentViewClasses";
 import studentViewClassesToEnrollSaga from "./studentViewClassesToEnrollSaga";
 import studentLogoutSaga from "./studentLogoutSaga";
+import instructorLoginSaga from "./instructorLoginSaga";
+import instructorViewClassesSaga from "./instructorViewClassesSaga";
 
 function* rootSaga() {
     yield all([
@@ -19,7 +21,9 @@ function* rootSaga() {
         studentLoginSaga(),
         studentViewClassesSaga(),
         studentViewClassesToEnrollSaga(),
-        studentLogoutSaga()
+        studentLogoutSaga(),
+        instructorLoginSaga(),
+        instructorViewClassesSaga()
     ])
 }
 

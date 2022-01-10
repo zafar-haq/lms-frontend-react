@@ -10,6 +10,9 @@ import StudentLogin from './components/student/StudentLogin';
 import AppBarStudent from './components/student/AppBarStudent';
 import StudentViewClasses from './components/student/StudentViewClasses';
 import Enroll from './components/student/Enroll';
+import InstructorLogin from './components/instructor/InstructorLogin';
+import AppBarInstructor from './components/instructor/AppBarInstructor';
+import InstructorViewClasses from './components/instructor/InstructorViewClasses';
 
 function App() {
   return (
@@ -27,6 +30,10 @@ function App() {
           <Route path="/student/view" element={<AppBarStudent />}> 
             <Route path="classes" element={<StudentViewClasses />}/>
             <Route path="enroll" element={<Enroll />}/>
+          </Route>
+          <Route path="instructor/login" element={<InstructorLogin />} />
+          <Route path="/instructor/view" element={<AppBarInstructor />}> 
+            <Route path="classes" element={<InstructorViewClasses />}/>
           </Route>
         </Routes>
       </Router>
