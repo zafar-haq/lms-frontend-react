@@ -1,3 +1,4 @@
+import { State } from '../../redux/reducers'
 import { Avatar, Button, Card, CardActions, CardContent, CardHeader, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Radio, RadioGroup, Stack, Typography } from "@mui/material"
 import { red, blue, green, yellow } from '@mui/material/colors';
 import { Box } from "@mui/system"
@@ -6,20 +7,18 @@ import { useDispatch, useSelector } from "react-redux";
 import AddIcon from '@mui/icons-material/Add';
 import axiosService from "../../services/axiosService";
 
-
-
 function Enroll() {
     const colors = [red[500], blue[500], green[500], yellow[500]]
     const token = localStorage.getItem('studentToken')
 
-    const classes = useSelector(state => state.studentViewClassesToEnroll.classes)
+    const classes = useSelector((state:State) => state.studentViewClassesToEnroll.classes)
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch({ type: 'STUDENT_VIEW_CLASSES_TO_ENROLL_REQUEST', payload: { token: token } })
     }, [])
 
-    async function enroll(classId){
-        await axiosService.send('student/enroll', token, {classId: classId}, 'post')
+    async function enroll(classId:number) {
+        await axiosService.send('student/enroll', token, { classId: classId }, 'post')
         window.location.reload()
     }
 
@@ -28,7 +27,7 @@ function Enroll() {
             <Stack direction='row' spacing={2} rowGap={4} p={1} sx={{ flexWrap: 'wrap' }}>
 
                 {
-                    classes.map(value => {
+                    classes.map((value) => {
                         let dateObject = new Date(value.createdAt)
                         let date = dateObject.toDateString()
                         return (<Card sx={{ minWidth: 340, ml: 2 }} raised={true} key={value.id}>
@@ -51,7 +50,7 @@ function Enroll() {
                                 </Typography>
                             </CardContent>
                             <CardActions disableSpacing>
-                                <Button onClick={() => {enroll(value.id)} } startIcon={<AddIcon />}>
+                                <Button onClick={() => { enroll(value.id) }} startIcon={<AddIcon />}>
                                     Enroll
                                 </Button>
                             </CardActions>

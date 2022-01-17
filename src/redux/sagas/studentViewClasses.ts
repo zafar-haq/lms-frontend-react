@@ -2,15 +2,15 @@ import { call, put, takeEvery } from "@redux-saga/core/effects";
 import axiosService from "../../services/axiosService";
 import { setStudentViewClasses } from '../actions/studentActions'
 
-async function studentViewClassesApi(token) {
+async function studentViewClassesApi(token:string) {
     try {
         return  await axiosService.send('student/getClasses', token, {}, 'get')
-    } catch (e) {
+    } catch (e:any) {
         console.log(e.response)
     }
 }
 
-function* studentViewClasses(payload) {
+function* studentViewClasses(payload:any):Generator<any, any, any> {
     const response = yield call(studentViewClassesApi, payload.payload.token)
     console.log("this is response", response.data.data)
     yield put(setStudentViewClasses(response.data.data))

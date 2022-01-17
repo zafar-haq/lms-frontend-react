@@ -1,20 +1,41 @@
+import RootState from "../../redux/defaultRootState";
 import { Avatar, Button, Card, CardActions, CardContent, CardHeader, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, Radio, RadioGroup, Stack, TextField, Typography } from "@mui/material"
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import { red, blue, green, yellow } from '@mui/material/colors';
 import { Box } from "@mui/system"
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axiosService from "../../services/axiosService";
 
-function InstructorsListDialog({ open, instructors, handleClose, value: valueProp, classId }) {
-    console.log(open)
-    console.log(instructors)
-    const radioGroupRef = useRef(null);
+interface PropsInterface {
+    open: boolean,
+    instructors: Array<any>,
+    handleClose: Function,
+    value: string,
+    classId: number | null
+}
+
+interface InstructorsDataInterface {
+    id: number,
+    email: string,
+    name: string
+}
+
+interface InstructorsApiData {
+    data: Array<InstructorsDataInterface>
+}
+
+interface InstructorsApiResponse {
+    data: InstructorsApiData
+}
+
+function InstructorsListDialog({ open, instructors, handleClose, value: valueProp, classId }: PropsInterface) {
+    const radioGroupRef = useRef<HTMLDivElement>(null);
     const [value, setValue] = useState(valueProp);
     const [instructorId, setInstructorId] = useState(null)
 
-    const handleChange = (event) => {
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setValue(event.target.value);
     };
 
@@ -60,7 +81,7 @@ function InstructorsListDialog({ open, instructors, handleClose, value: valuePro
     )
 }
 
-function AdminViewClasses() {
+const AdminViewClasses:FC = () => {
     const colors = [red[500], blue[500], green[500], yellow[500]]
     const token = localStorage.getItem('adminToken')
 
@@ -68,32 +89,32 @@ function AdminViewClasses() {
     const [credentials, setCredentials] = useState({ course_name: '', strength: '' })
 
     const [open, setOpen] = useState(false)
-    const [instructors, setInstructors] = useState([])
+    const [instructors, setInstructors] = useState<Array<InstructorsDataInterface>>([])
     const [value, setValue] = useState('')
-    const [classId, setClassId] = useState(null)
+    const [classId, setClassId] = useState<number | null>(null)
 
-    const classes = useSelector(state => state.adminViewClasses.classes)
+    const classes = useSelector((state: RootState) => state.adminViewClasses.classes)
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch({ type: 'ADMIN_VIEW_CLASSES_REQUEST', payload: { token: token } })
         console.log(classes)
     }, [value])
 
-    const handleClose = async (newValue) => {
+    const handleClose = async (newValue: string) => {
         setOpen(false);
         if (newValue) {
             setValue(newValue);
-            const response = await axiosService.send('admin/assign/instructor', token, { classId: classId, instructorId: newValue }, 'post')
+            await axiosService.send('admin/assign/instructor', token, { classId: classId, instructorId: newValue }, 'post')
 
         }
     };
 
     async function getInstructorsApi() {
-        const response = await axiosService.send('admin/getInstructors', token, {}, 'get')
+        const response:any = await axiosService.send('admin/getInstructors', token, {}, 'get')
         setInstructors(response.data.data)
     }
 
-    function getInstructors(id) {
+    function getInstructors(id: number) {
         getInstructorsApi()
         setOpen(true)
         console.log("these are instructors", instructors)
@@ -109,7 +130,7 @@ function AdminViewClasses() {
     };
 
     const createClass = async () => {
-        await axiosService.send('admin/create/class', token, {course_name: credentials.course_name, strength:credentials.strength}, 'post')
+        await axiosService.send('admin/create/class', token, { course_name: credentials.course_name, strength: credentials.strength }, 'post')
         handleDialogClose()
         window.location.reload()
     }
@@ -117,7 +138,7 @@ function AdminViewClasses() {
     return (
         <Box>
             <Box justifyContent='flex-start'>
-                <Button variant="outlined" sx={{display:'flex', justifyContent:'flex-start',  alignItems:"flex-start", ml:3, mb:1}} onClick={handleDialogOpen} color="success" startIcon={<AddIcon />}  >
+                <Button variant="outlined" sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: "flex-start", ml: 3, mb: 1 }} onClick={handleDialogOpen} color="success" startIcon={<AddIcon />}  >
                     Create new class
                 </Button>
             </Box>

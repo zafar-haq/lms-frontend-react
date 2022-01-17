@@ -2,7 +2,7 @@ import { put, takeEvery } from "@redux-saga/core/effects";
 import { removeAuth } from '../actions/adminActions'
 
 function* adminLogout() {
-    yield put(removeAuth(''))
+    yield put(removeAuth({token:'', error:''}))
 }
 
 function* adminLogoutSaga() {

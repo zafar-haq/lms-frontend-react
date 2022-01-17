@@ -1,10 +1,11 @@
+import { State } from "../../redux/reducers";
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Stack, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { DataGrid } from "@mui/x-data-grid"
+import { DataGrid, GridSelectionModel } from "@mui/x-data-grid"
 
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import axiosService from "../../services/axiosService";
@@ -13,8 +14,8 @@ function AdminViewStudents() {
 
     const [open, setOpen] = useState(false);
     const [credentials, setCredentials] = useState({ email: '', name: '', password: '' })
-    const [selectionModel, setSelectionModel] = useState(null)
-    const viewStudents = useSelector((state) => state.adminViewStudents)
+    const [selectionModel, setSelectionModel] = useState<GridSelectionModel | null>(null)
+    const viewStudents = useSelector((state:State) => state.adminViewStudents)
     const dispatch = useDispatch()
     const token = localStorage.getItem('adminToken')
 
@@ -28,7 +29,7 @@ function AdminViewStudents() {
         try {
             const response = await axiosService.send('admin/create/student', token, payload, 'post')
             dispatch({ type: 'ADMIN_VIEW_STUDENTS_REQUEST', payload: { token: token } })
-        } catch (e) {
+        } catch (e:any) {
             console.log(e.response)
         }
         setOpen(false)
@@ -43,13 +44,13 @@ function AdminViewStudents() {
     };
 
     const deleteStudent = async () => {
-        await axiosService.send('admin/delete/student', token, {id: selectionModel[0]}, 'post')
+        await axiosService.send('admin/delete/student', token, {id: selectionModel![0]}, 'post')
         window.location.reload()
     }
 
     return (
         <Box sx={{ display: 'inline-flex', flexDirection: 'row' }}>
-            <Box style={{ height: 250, width: 550, height: 500 }}  >
+            <Box style={{ height: 250, width: 550 }}  >
                 <DataGrid
                     columns={[{ field: 'id' }, { field: 'name', width: 200 }, { field: 'email', width: 200 }]}
                     rows={viewStudents.students}

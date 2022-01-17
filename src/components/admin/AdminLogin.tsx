@@ -1,16 +1,17 @@
+import RootState from "../../redux/defaultRootState";
 import { Alert, Avatar, Button, Grid, Paper, Snackbar, TextField } from "@mui/material";
 import { useNavigate } from "react-router";
 import LockIcon from '@mui/icons-material/Lock'
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux"
 
-function AdminLogin() {
-
+const AdminLogin:FC = () => {
+    
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [snackOpen, setSnackOpen] = useState(false)
     const [snackMessage, setSnackMessage] = useState('')
-    const adminAuth = useSelector(state => state.adminAuth)
+    const adminAuth = useSelector((state:RootState) => state.adminAuth)
     const dispatch = useDispatch()
     const router = useNavigate()
 
